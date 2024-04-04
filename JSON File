@@ -1,0 +1,13 @@
+[
+    {
+        "name": "test-repo-1",
+        "description": "This is a test repository",
+        "private": false
+    },
+    {
+        "name": "test-repo-2",
+        "description": "This is another test repository",
+        "private": true
+    }
+    // Add more test data as needed
+]
