@@ -1,0 +1,30 @@
+import requests
+import json
+from requests.auth import HTTPBasicAuth
+
+# Replace 'your_username' and 'your_token' with your GitHub username and personal access token
+username = 'your_username'
+token = 'your_token'
+
+# The GitHub API URL for creating a new repository
+url = 'https://api.github.com/user/repos'
+
+# Load test data from a JSON file
+with open('test_data.json') as file:
+    test_repos = json.load(file)
+
+# Function to create a repository
+def create_repository(repo_data):
+    response = requests.post(url, auth=HTTPBasicAuth(username, token), json=repo_data)
+    return response
+
+# Test function for data-driven testing
+def test_create_repositories():
+    for repo_data in test_repos:
+        response = create_repository(repo_data)
+        # Assert that the response status code is 201 (Created) for positive tests
+        assert response.status_code == 201, f"Expected status code 201, but got {response.status_code} for repo {repo_data['name']}"
+        # Add more assertions as needed based on the test data and expected outcomes
+
+# Call the test function
+test_create_repositories()
