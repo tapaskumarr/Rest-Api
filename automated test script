@@ -1,0 +1,33 @@
+import requests
+from requests.auth import HTTPBasicAuth
+
+# Replace 'your_username' and 'your_token' with your GitHub username and personal access token
+username = 'your_username'
+token = 'your_token'
+
+# The repository to get details from
+owner = 'octocat'
+repo = 'Hello-World'
+
+# The GitHub API URL for getting repository details
+url = f'https://api.github.com/repos/{owner}/{repo}'
+
+# Make the GET request to the GitHub API
+response = requests.get(url, auth=HTTPBasicAuth(username, token))
+
+# Assertions to validate the response
+def test_get_repository_details():
+    # Assert that the response status code is 200 (OK)
+    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
+
+    # Assert that the response is in JSON format
+    assert response.headers['Content-Type'] == 'application/json; charset=utf-8', "Response is not in JSON format"
+
+    # Assert that the repository name is correct
+    assert response.json()['name'] == repo, f"Repository name does not match '{repo}'"
+
+    # Assert that the owner login is correct
+    assert response.json()['owner']['login'] == owner, f"Owner login does not match '{owner}'"
+
+# Call the test function
+test_get_repository_details()
