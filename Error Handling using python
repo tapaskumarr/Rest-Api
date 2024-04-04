@@ -1,0 +1,41 @@
+import requests
+from requests.auth import HTTPBasicAuth
+
+# Replace 'your_username' and 'your_token' with your GitHub username and personal access token
+username = 'your_username'
+token = 'your_token'
+
+# The GitHub API URL for creating a new repository
+url = 'https://api.github.com/user/repos'
+
+# Sample incorrect data to trigger error conditions
+incorrect_repo_data = {
+    "name": "",  # Name is required and cannot be empty
+    "auto_init": "true"  # auto_init should be a boolean, not a string
+}
+
+# Function to create a repository
+def create_repository(repo_data):
+    response = requests.post(url, auth=HTTPBasicAuth(username, token), json=repo_data)
+    return response
+
+# Test function for error handling
+def test_create_repository_with_errors():
+    response = create_repository(incorrect_repo_data)
+    
+    # Check for client error responses (4xx)
+    if response.status_code >= 400 and response.status_code < 500:
+        print(f"Client Error: {response.status_code}")
+        print(f"Error message: {response.json().get('message')}")
+        # Include additional checks for specific error messages or conditions
+    
+    # Check for server error responses (5xx)
+    elif response.status_code >= 500:
+        print(f"Server Error: {response.status_code}")
+        print("Please try again later or contact support if the problem persists.")
+    
+    # Assert that an error was returned
+    assert response.status_code >= 400, "Expected an error status code but got a successful response"
+
+# Call the test function
+test_create_repository_with_errors()
